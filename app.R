@@ -146,7 +146,7 @@ server <- function(input, output, session) {
   # Full table
   output$fullTable <- renderDT({
     
-  datatable(df %>% sample_n(2000) %>% 
+  datatable(df %>% 
               select(CHEMICAL_NAME, LOC_NAME, everything()) %>%
               select(-FACILITY_CODE, -FACILITY_NAME, -FACILITY_ID) %>% 
               arrange(CHEMICAL_NAME), 
