@@ -6,6 +6,7 @@ library(shiny)
 library(plotly)
 library(DT)
 library(dplyr)
+library(ggplot2)
 
 #df <- read_csv("HUC07030004_EQuIS_sample.csv") %>% mutate(SAMPLE_DATE = mdy_hm(SAMPLE_DATE))
 
