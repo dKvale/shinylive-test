@@ -115,7 +115,7 @@ server <- function(input, output, session) {
               #STATIONS = unique(SYS_LOC_CODE) %>% sort %>% paste(collapse = ", ")
     ) %>% 
     arrange(LOC_NAME) %>%
-    datatable(options = list(pageLength = 8, scrollX = TRUE, columnDefs = list(
+    datatable(options = list(pageLength = 7, scrollX = TRUE, columnDefs = list(
       list(width = '400px', targets = 3)  # Column index is 0-based (3 = 4th column)
     )), 
               filter = "top",
@@ -171,7 +171,7 @@ server <- function(input, output, session) {
   datatable(df %>% 
               select(CHEMICAL_NAME, LOC_NAME, everything()) %>% 
               arrange(CHEMICAL_NAME), 
-            options = list(pageLength = 5, scrollX = TRUE), 
+            options = list(pageLength = 3, scrollX = TRUE), 
             filter = "top",
             rownames = FALSE)
   })
