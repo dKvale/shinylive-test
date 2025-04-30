@@ -98,7 +98,7 @@ server <- function(input, output, session) {
               #STATIONS = unique(SYS_LOC_CODE) %>% sort %>% paste(collapse = ", ")
     ) %>% 
     arrange(LOC_NAME) %>%
-    datatable(options = list(pageLength = 7, scrollX = TRUE, columnDefs = list(
+    datatable(options = list(pageLength = 8, scrollX = TRUE, columnDefs = list(
       list(width = '400px', targets = 3)  # Column index is 0-based (3 = 4th column)
     )), 
               filter = "top",
@@ -124,7 +124,8 @@ server <- function(input, output, session) {
             type = "box",
             boxpoints = "all",
             jitter = 0.1,
-            pointpos = -1.5) %>%
+            pointpos = -1.5,
+            opcacity = 0.9) %>%
       layout(title = "Results by Month")
   })
   
@@ -136,15 +137,15 @@ server <- function(input, output, session) {
     summary <- df %>%
       summarise(
         N = n(),
+        NA_Count = sum(is.na(RESULT_NUMERIC)),
         Min = min(RESULT_NUMERIC, na.rm = TRUE),
         Mean = signif(mean(RESULT_NUMERIC, na.rm = TRUE), 3),
         Median = median(RESULT_NUMERIC, na.rm = TRUE),
         Max = max(RESULT_NUMERIC, na.rm = TRUE),
-        SD = signif(sd(RESULT_NUMERIC, na.rm = TRUE), 3),
-        NA_Count = sum(is.na(RESULT_NUMERIC))
+        SD = signif(sd(RESULT_NUMERIC, na.rm = TRUE), 3)
       )
     
-    datatable(summary, options = list(dom = 't'))
+    datatable(summary, options = list(dom = 't'), rownames = FALSE)
   })
   
   # Full table
@@ -153,7 +154,7 @@ server <- function(input, output, session) {
   datatable(df %>% 
               select(CHEMICAL_NAME, LOC_NAME, everything()) %>% 
               arrange(CHEMICAL_NAME), 
-            options = list(pageLength = 7, scrollX = TRUE), 
+            options = list(pageLength = 5, scrollX = TRUE), 
             filter = "top",
             rownames = FALSE)
   })
