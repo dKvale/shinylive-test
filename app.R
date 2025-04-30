@@ -34,6 +34,7 @@ ui <- fluidPage(
     "))
   ),
   fluidRow(
+    br(),
     column(4,
            selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort,
                        selected = "Alkalinity, total")),
