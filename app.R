@@ -17,6 +17,22 @@ df <- df %>%
          MONTH = lubridate::month(SAMPLE_DATE, label = TRUE, abbr = TRUE))
 # UI ----
 ui <- fluidPage(
+  tags$head(
+    tags$style(HTML("
+      body {
+        font-size: 16px;
+      }
+      .form-control, .selectize-input, .selectize-dropdown, .dataTables_wrapper {
+        font-size: 16px;
+      }
+      .tabbable .nav-tabs li a {
+        font-size: 18px;
+      }
+      .plotly {
+        font-size: 16px;
+      }
+    "))
+  ),
   fluidRow(
     column(4,
            selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort,
