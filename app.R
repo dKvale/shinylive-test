@@ -10,25 +10,15 @@ library(ggplot2)
 
 #df <- read_csv("HUC07030004_EQuIS_sample.csv") %>% mutate(SAMPLE_DATE = mdy_hm(SAMPLE_DATE))
 
-df <- tibble::tribble(~FACILITY_CODE,  ~FACILITY_TYPE, ~FACILITY_ID,                                               ~FACILITY_NAME,    ~SYS_LOC_CODE, ~STREAM_CODE, ~LOC_NAME, ~LOC_TYPE, ~LOC_DESC, ~LOC_COUNTY_CODE, ~LOC_MAJOR_BASIN,   ~X_COORD,  ~Y_COORD, ~COORD_TYPE_CODE,          ~SAMPLE_DATE, ~SAMPLE_TYPE_CODE,                 ~SYS_SAMPLE_CODE, ~START_DEPTH, ~DEPTH_UNIT, ~MEDIUM_CODE, ~MATRIX_CODE, ~REPORTABLE_YN, ~TASK_CODE, ~TASK_CODE_2,          ~TASK_DESC,         ~CONTACT, ~DTTASK_TC,      ~CAS_RN,                                ~CHEMICAL_NAME, ~ANALYTIC_METHOD, ~FRACTION, ~DETECT_FLAG,  ~RESULT_TEXT, ~RESULT_NUMERIC, ~RESULT_UNIT, ~REPORTABLE_RESULT, ~INTERPRETED_QUALIFIERS, ~REPORTING_DETECTION_LIMIT, ~METHOD_DETECTION_LIMIT, ~DETECTION_LIMIT_UNIT, ~APPROVAL_CODE, ~VALUE_TYPE, ~REMARK, ~DQM_REMARK, ~LAB_NAME_CODE, ~LAB_CODE, ~COMPANY_CODE,                     ~LOCATION, ~MONTH,
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-18 12:30:00",          "Sample", "01-0064-00-201.1809181230.000S",           NA,          NA,      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049", "14808-79-8",                                     "Sulfate",           "D516",   "Total",          "N",            NA,              NA,       "mg/L",                "Y",                     "<",                          3,                   0.751,                "mg/L",        "Final",    "Actual",      NA,          NA,      "MN00918",        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-18 12:30:00",          "Sample", "01-0064-00-201.1809181230.000S",           NA,          NA,      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",  "7723-14-0",                                  "Phosphorus",          "365.3",   "Total",          "Y",       "0.026",           0.026,       "mg/L",                "Y",                      NA,                      0.003,                   0.001,                "mg/L",        "Final",    "Actual",      NA,          NA,      "MN00918",        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-18 12:30:00",          "Sample", "01-0064-00-201.1809181230.000S",           NA,          NA,      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",  "CHLA-CORR",     "Chlorophyll a, corrected for pheophytin",        "10200-H",   "Total",          "Y",        "10.7",            10.7,       "ug/L",                "Y",                      NA,                          1,                      NA,                "ug/L",        "Final",    "Actual",    "nc",          NA,      "MN00918",        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-18 12:30:00",             "FMO", "01-0064-00-201.1809181230.000F",            0,         "m",      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",     "SECCHI",                    "Depth, Secchi disk depth",            "FLD",   "Total",          "Y",        "0.81",            0.81,          "m",                "Y",                      NA,                         NA,                      NA,                    NA,        "Final",    "Actual",      NA,          NA,             NA,        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-18 12:30:00",             "FMO", "01-0064-00-201.1809181230.000F",            0,         "m",      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",    "LAKE-RS", "Lake recreational suitability (choice list)",            "FLD",   "Total",          "Y", "1.VERY GOOD",              NA,           NA,                "Y",                      NA,                         NA,                      NA,                    NA,        "Final",    "Actual",      NA,          NA,             NA,        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-18 12:30:00",             "FMO", "01-0064-00-201.1809181230.000F",            0,         "m",      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",    "LAKE-PA",      "Lake physical appearance (choice list)",            "FLD",   "Total",          "Y", "3.MED ALGAE",              NA,           NA,                "Y",                      NA,                         NA,                      NA,                    NA,        "Final",    "Actual",      NA,          NA,             NA,        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-05 14:00:00",             "FMO", "01-0064-00-201.1809051400.000F",            0,         "m",      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",    "LAKE-PA",      "Lake physical appearance (choice list)",            "FLD",   "Total",          "Y", "3.MED ALGAE",              NA,           NA,                "Y",                      NA,                         NA,                      NA,                    NA,        "Final",    "Actual",      NA,          NA,             NA,        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-05 14:00:00",          "Sample", "01-0064-00-201.1809051400.000S",           NA,          NA,      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",  "CHLA-CORR",     "Chlorophyll a, corrected for pheophytin",        "10200-H",   "Total",          "Y",        "9.79",            9.79,       "ug/L",                "Y",                      NA,                          1,                      NA,                "ug/L",        "Final",    "Actual",    "nc",          NA,      "MN00918",        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-05 14:00:00",             "FMO", "01-0064-00-201.1809051400.000F",            0,         "m",      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",     "SECCHI",                    "Depth, Secchi disk depth",            "FLD",   "Total",          "Y",        "0.76",            0.76,          "m",                "Y",                      NA,                         NA,                      NA,                    NA,        "Final",    "Actual",      NA,          NA,             NA,        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep",
-                                                "MNPCA", "Statewide-ASW",            1, "Minnesota Pollution Control Agency - Ambient Surface Water", "01-0064-00-201", "01-0064-00",    "BEAR",    "Lake",    "Bear",         "Aitkin",       "07030004", -93.370456, 46.239632,       "LAT-LONG", "2018-09-05 14:00:00",             "FMO", "01-0064-00-201.1809051400.000F",            0,         "m",      "Water",   "Wtr-Surf",             NA, "PRJ08049",   "PRJ08049", "Kanabec SWCD SWAG",  "O'Hara, Kelly", "PRJ08049",    "LAKE-RS", "Lake recreational suitability (choice list)",            "FLD",   "Total",          "Y", "1.VERY GOOD",              NA,           NA,                "Y",                      NA,                         NA,                      NA,                    NA,        "Final",    "Actual",      NA,          NA,             NA,        NA,            NA, "BEAR Lake :: 01-0064-00-201",  "Sep"
-                                         )
+df <- read_csv("https://raw.githubusercontent.com/dKvale/shinylive-test/refs/heads/main/simpler_df.csv")
 
 
 # UI ----
 ui <- fluidPage(
   fluidRow(
     column(4,
-           selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort)),
+           selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort,
+                       selected = "Alkalinity, total")),
     column(5, uiOutput("location_ui"))
   ),
   
@@ -37,17 +27,26 @@ ui <- fluidPage(
              br(),
              DTOutput("paramTable")
     ),
-    tabPanel("Time Series",
-             br(),
-             plotlyOutput("timePlot")
+    tabPanel("Data Explorer",
+  br(),
+  fluidRow(
+    column(6,
+           tags$h4("Time Series"),
+           plotlyOutput("timePlot")
     ),
-    tabPanel("Monthly Comparisons",
-             br(),
-             plotlyOutput("boxPlot")
-    ),
-    tabPanel("Summary Table",
-             DTOutput("summaryTable")
-    ),
+    column(6,
+           tags$h4("Monthly Comparisons"),
+           plotlyOutput("boxPlot")
+    )
+  ),
+  br(),
+  fluidRow(
+    column(12,
+           tags$h4("Summary Table"),
+           DTOutput("summaryTable")
+    )
+  )
+),
     tabPanel("All data",
              br(),
              DTOutput("fullTable")
@@ -81,7 +80,7 @@ server <- function(input, output, session) {
       "location",
       "Select a Station",
       choices = c("All", sort(unique(locations))),
-      selected = isolate(input$location)  # preserve selection on re-render
+      selected = "ANN Lake :: 33-0040-00-201"
     )
   })
   
