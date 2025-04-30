@@ -9,11 +9,12 @@ library(dplyr)
 library(ggplot2)
 library(readr)
 
-#df <- read_csv("HUC07030004_EQuIS_sample.csv") %>% mutate(SAMPLE_DATE = mdy_hm(SAMPLE_DATE))
 
 df <- read_csv("https://raw.githubusercontent.com/dKvale/shinylive-test/refs/heads/main/simpler_df.csv")
 
-
+df <- df %>% 
+  mutate(LOCATION = paste0(LOC_NAME, " ", LOC_TYPE,  " :: ", SYS_LOC_CODE),
+         MONTH = lubridate::month(SAMPLE_DATE, label = TRUE, abbr = TRUE))
 # UI ----
 ui <- fluidPage(
   fluidRow(
