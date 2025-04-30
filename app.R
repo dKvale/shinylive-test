@@ -33,39 +33,38 @@ ui <- fluidPage(
       }
     "))
   ),
-  fluidRow(
-    br(),
-    column(4,
-           selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort,
-                       selected = "Alkalinity, total")),
-    column(5, uiOutput("location_ui"))
-  ),
-  
   tabsetPanel(
-    tabPanel("Parameter list",
+    tabPanel("Parameters available",
              br(),
              DTOutput("paramTable")
     ),
     tabPanel("Data Explorer",
-  br(),
-  fluidRow(
-    column(6,
-           tags$h4("Time Series"),
-           plotlyOutput("timePlot")
+
+          fluidRow(
+            br(),
+            column(4,
+                   selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort,
+                               selected = "Alkalinity, total")),
+            column(5, uiOutput("location_ui"))
+        ),  br(),         
+        fluidRow(
+          column(6,
+                 tags$h4("Time Series"),
+                 plotlyOutput("timePlot")
+          ),
+          column(6,
+                 tags$h4("Monthly Comparisons"),
+                 plotlyOutput("boxPlot")
+          )
+        ),
+        br(),
+        fluidRow(
+          column(12,
+                 tags$h4("Summary Table"),
+                 DTOutput("summaryTable")
+          )
+        )
     ),
-    column(6,
-           tags$h4("Monthly Comparisons"),
-           plotlyOutput("boxPlot")
-    )
-  ),
-  br(),
-  fluidRow(
-    column(12,
-           tags$h4("Summary Table"),
-           DTOutput("summaryTable")
-    )
-  )
-),
     tabPanel("All data",
              br(),
              DTOutput("fullTable")
