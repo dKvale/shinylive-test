@@ -98,7 +98,7 @@ server <- function(input, output, session) {
       "location",
       "Select a Station",
       choices = c("All", sort(unique(locations))),
-      selected = "ANN Lake :: 33-0040-00-201"
+      selected = "All"
     )
   })
   
