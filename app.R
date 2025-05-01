@@ -10,11 +10,13 @@ library(ggplot2)
 library(readr)
 
 
-df <- read_csv("https://raw.githubusercontent.com/dKvale/shinylive-test/refs/heads/main/simpler_df.csv")
+df <- read_csv("https://raw.githubusercontent.com/tidy-MN/tidytuesdays/refs/heads/main/show-n-tell/dashboards/water_dashboard_data.csv")
 
 df <- df %>% 
   mutate(LOCATION = paste0(LOC_NAME, " ", LOC_TYPE,  " :: ", SYS_LOC_CODE),
          MONTH = lubridate::month(SAMPLE_DATE, label = TRUE, abbr = TRUE))
+
+
 # UI ----
 ui <- fluidPage(
   tags$head(
@@ -43,8 +45,8 @@ ui <- fluidPage(
           fluidRow(
             br(),
             column(4,
-                   selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL_NAME) %>% sort,
-                               selected = "Alkalinity, total")),
+                   selectInput("chemical", "Select a Parameter", choices = unique(df$CHEMICAL) %>% sort,
+                               selected = "Temperature, water")),
             column(5, uiOutput("location_ui"))
         ),  br(),         
         fluidRow(
@@ -76,40 +78,42 @@ ui <- fluidPage(
 # Server ----
 server <- function(input, output, session) {
   
-  # Filtered data
-  filtered_df <- reactive({
-    req(input$chemical)
-    
-    df %>%
-      filter(CHEMICAL_NAME == input$chemical,
-             is.null(input$location) | input$location == "All" | LOCATION == input$location)
-  })
-  
   # Dynamically update location choices based on chemical
   output$location_ui <- renderUI({
-    
-    locations <- if (is.null(input$chemical) || input$chemical == "All") {
-      df$LOCATION
-    } else {
-      df[df$CHEMICAL_NAME == input$chemical, "LOCATION", drop = TRUE]
-    }
-    
+  
+    locations <- df %>%
+      filter(CHEMICAL == input$chemical) %>%
+      pull(LOCATION) %>%
+      unique() %>%
+      sort()
+  
+    if (length(locations) == 0) locations <- ""
+  
     selectInput(
       "location",
       "Select a Station",
-      choices = c("All", sort(unique(locations))),
+      choices = c("All", locations),
       selected = "All"
     )
   })
+
+  # Filtered data
+  filtered_df <- reactive({
+    
+    if (!is.null(input$location) || input$location != "All") df <- df %>% filter(CHEMICAL == input$chemical)
+    if (is.null(input$location) || input$location == "All") return(df)
+
+    df %>% filter(LOCATION == input$location)
+  })
+
   
   # Parameter table
   output$paramTable <- renderDT({
-    
     df %>% 
     group_by(SYS_LOC_CODE) %>% 
     summarize(LOC_NAME = LOC_NAME[1],
               LOC_TYPE = LOC_TYPE[1],
-              PARAMETERS = unique(CHEMICAL_NAME) %>% sort %>% paste(collapse = ", ")
+              PARAMETERS = unique(CHEMICAL) %>% sort %>% paste(collapse = ", ")
               #YEARS = unique(year(SAMPLE_DATE)) %>% sort %>% paste(collapse = ", "),
               #STATIONS = unique(SYS_LOC_CODE) %>% sort %>% paste(collapse = ", ")
     ) %>% 
@@ -121,21 +125,16 @@ server <- function(input, output, session) {
               rownames = FALSE)
   })
   
-  # Time series line plot
-  output$timePlot <- renderPlotly({
-    plot_ly(filtered_df(), 
-            x = ~SAMPLE_DATE, y = ~RESULT_NUMERIC,
-            type = "scatter", 
-            mode = "lines+markers",
-            #color = ~location,
-            line = list(shape = "spline"),
-            connectgaps = TRUE) %>%
-      layout(title = "Results Over Time")
-  })
+
   
   # Monthly boxplot
   output$boxPlot <- renderPlotly({
-    plot_ly(filtered_df(),
+    
+    invalidateLater(100, session)
+    df <- filtered_df()
+    req(nrow(df) > 0)
+    
+    plot_ly(df,
             x = ~MONTH, y = ~RESULT_NUMERIC,
             type = "box",
             boxpoints = "all",
@@ -143,6 +142,23 @@ server <- function(input, output, session) {
             pointpos = -1.5,
             opcacity = 0.9) %>%
       layout(title = "Results by Month")
+  })
+
+    # Time series line plot
+  output$timePlot <- renderPlotly({
+    
+    invalidateLater(300, session)
+    df <- filtered_df()
+    req(nrow(df) > 0)
+    
+    plot_ly(df, 
+            x = ~SAMPLE_DATE, y = ~RESULT_NUMERIC,
+            type = "scatter", 
+            mode = "lines+markers",
+            #color = ~location,
+            line = list(shape = "spline"),
+            connectgaps = TRUE) %>%
+      layout(title = "Results Over Time")
   })
   
   # Summary table
@@ -168,8 +184,8 @@ server <- function(input, output, session) {
   output$fullTable <- renderDT({
     
   datatable(df %>% 
-              select(CHEMICAL_NAME, LOC_NAME, everything()) %>% 
-              arrange(CHEMICAL_NAME), 
+              select(CHEMICAL, LOC_NAME, everything()) %>% 
+              arrange(CHEMICAL), 
             options = list(pageLength = 3, scrollX = TRUE), 
             filter = "top",
             rownames = FALSE)
@@ -178,4 +194,3 @@ server <- function(input, output, session) {
 
 
 shinyApp(ui, server)
-
