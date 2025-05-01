@@ -82,7 +82,7 @@ server <- function(input, output, session) {
     
     df %>%
       filter(CHEMICAL_NAME == input$chemical,
-             is.null(input$location) | LOCATION == "All" | LOCATION == input$location)
+             is.null(input$location) | input$location == "All" | LOCATION == input$location)
   })
   
   # Dynamically update location choices based on chemical
